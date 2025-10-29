@@ -9,3 +9,7 @@ RUN apt-get update && apt-get install -y \
 
 # Берём Composer из официального образа
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+COPY . .
+
+RUN composer install
