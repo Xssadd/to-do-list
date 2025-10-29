@@ -1,0 +1,63 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: to_do_list
+    working_dir: /var/www/html
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - todolist_networks
+
+  nginx:
+    image: nginx:alpine
+    container_name: todolist_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - todolist_networks
+    depends_on:
+      - app
+
+  mysql:
+    image: mysql:8
+    container_name: todolist_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: todolist
+#      MYSQL_USER: todolist
+#      MYSQL_PASSWORD: todolist
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - todolist_networks
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: todolist_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+#      PMA_USER: todolist
+      PMA_PASSWORD: root
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - todolist_networks
+
+networks:
+  todolist_networks:
+
+volumes:
+  mysql_data:
