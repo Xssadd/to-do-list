@@ -1,0 +1,20 @@
+{
+  "name": "vendor_name/to-do-list",
+  "description": "simple to do list app",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Xssadd",
+      "email": "oleg.sytko24@gmail.com"
+    }
+  ],
+  "require": {
+    "ext-pdo": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
+}
