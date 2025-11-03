@@ -3,3 +3,4 @@ vendor/
 .gitignore
 .DS_Store
 .idea
+todolist.sql
