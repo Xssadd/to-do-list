@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Core;
 
 abstract class Controller
 {
@@ -8,9 +8,9 @@ abstract class Controller
     {
         extract($params);
         ob_start();
-        include __DIR__. '/templates/' . $view . '.php';
+        include __DIR__. '/../templates/' . $view . '.php';
         $content = ob_get_clean();
-        include __DIR__ . '/templates/layout.php';
+        include __DIR__ . '/../templates/layout.php';
     }
 
 }

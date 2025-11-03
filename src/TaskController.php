@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Core\Controller;
+
 class TaskController extends Controller
 {
     private Task $taskModel;
@@ -31,7 +33,7 @@ class TaskController extends Controller
         $this->render('form');
     }
 
-    public function edit($id): void
+    public function edit(int $id): void
     {
         $task = $this->taskModel->find($id);
 

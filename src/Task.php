@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Core\Database;
 use PDO;
 
 class Task
