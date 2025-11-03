@@ -16,8 +16,8 @@
             <td><?= htmlspecialchars($task['description'] ?? '') ?></td>
             <td><?= $task['status'] === 'pending' ? 'В ожидании' : 'Выполнено'?></td>
             <td>
-                <a href="/edit?id=<?= $task['id'] ?>">✏️</a> |
-                <a href="/delete?id=<?= $task['id'] ?>" onclick="return confirm('Удалить задачу?')">🗑️</a>
+                <a href="/edit/<?= $task['id'] ?>">✏️</a> |
+                <a href="/delete/=<?= $task['id'] ?>" onclick="return confirm('Удалить задачу?')">🗑️</a>
             </td>
         </tr>
     <?php endforeach; ?>

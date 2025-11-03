@@ -3,22 +3,24 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\TaskController;
+use App\Core\Router;
 
 //ini_set('display_errors', '1');
 //ini_set('display_startup_errors', '1');
 //error_reporting(E_ALL);
 
-$urlPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$urlArray = explode('/', trim($urlPath, '/'));
+$router = new Router();
 
-$action = $urlArray[0] ?? 'index';
-$id = $_GET['id'] ?? null;
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$method = $_SERVER['REQUEST_METHOD'];
 
-$controller  = new TaskController();
+$router->get('/', [TaskController::class, 'index']);
+$router->get('/add', [TaskController::class, 'create']);
+$router->get('/edit/{id}', [TaskController::class, 'edit']);
+$router->get('/delete/{id}', [TaskController::class, 'delete']);
 
-match ($action) {
-    'add' => $controller->create(),
-    'edit' => $id ? $controller->edit($id) : http_response_code(400),
-    'delete' => $id ? $controller->delete($id) : http_response_code(400),
-    default => $controller->index(),
-};
+try {
+    $router->dispatch($method, $uri);
+} catch (Exception $e) {
+    http_response_code(404);
+}

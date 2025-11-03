@@ -19,4 +19,4 @@
     <button type="submit"><?= $isEdit ? 'Сохранить' : 'Добавить' ?></button>
 </form>
 
-<a href="index.php">⬅️ Назад</a>
+<a href="/">⬅️ Назад</a>
