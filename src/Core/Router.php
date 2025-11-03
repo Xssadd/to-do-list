@@ -9,21 +9,31 @@ class Router
 
     public function get(string $uri, $action): void
     {
-        $this->addRoute('GET', $uri, $action);
+        $this->addRoute(['GET'], $uri, $action);
     }
 
     public function post(string $uri, $action): void
     {
-        $this->addRoute('POST', $uri, $action);
+        $this->addRoute(['POST'], $uri, $action);
     }
 
-    private function addRoute(string $method, string $uri, $action): void
+    public function delete(string $uri, $action): void
     {
-        // Преобразуем /users/{id} → #^/users/([^/]+)$#
+        $this->addRoute(['DELETE'], $uri, $action);
+    }
+
+    public function any(string $uri, $action): void
+    {
+        $this->addRoute(['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], $uri, $action);
+    }
+
+    private function addRoute(array $methods, string $uri, $action): void
+    {
         $uri = preg_replace('#\{([^/]+)\}#', '([^/]+)', $uri);
         $uri = "#^" . $uri . "$#";
 
-        $this->routes[$method][] = [
+        $this->routes[] = [
+            'methods' => $methods,
             'uri' => $uri,
             'action'  => $action,
         ];
@@ -31,11 +41,9 @@ class Router
 
     public function dispatch(string $method, string $uri)
     {
-        $routes = $this->routes[$method] ?? [];
-
-        foreach ($routes as $route) {
-            if (preg_match($route['uri'], $uri, $matches)) {
-                array_shift($matches); // убираем полное совпадение
+        foreach ($this->routes as $route) {
+            if (in_array($method, $route['methods']) && preg_match($route['uri'], $uri, $matches)) {
+                array_shift($matches);
 
                 $action = $route['action'];
 

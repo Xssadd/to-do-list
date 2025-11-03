@@ -15,9 +15,9 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 
 $router->get('/', [TaskController::class, 'index']);
-$router->get('/add', [TaskController::class, 'create']);
-$router->get('/edit/{id}', [TaskController::class, 'edit']);
-$router->get('/delete/{id}', [TaskController::class, 'delete']);
+$router->any('/add', [TaskController::class, 'create']);
+$router->any('/edit/{id}', [TaskController::class, 'edit']);
+$router->delete('/delete/{id}', [TaskController::class, 'delete']);
 
 try {
     $router->dispatch($method, $uri);

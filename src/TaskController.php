@@ -26,7 +26,7 @@ class TaskController extends Controller
             $data['description'] = trim($_POST['description'] ?? '');
             $this->taskModel->create($data);
 
-            header("Location: index.php");
+            header("Location: /");
             exit;
         }
 
@@ -49,17 +49,17 @@ class TaskController extends Controller
             $data['status'] = $_POST['status'];
             $this->taskModel->update($id, $data);
 
-            header("Location: index.php");
+            header("Location: /");
             exit;
         }
 
         $this->render('form', compact('task'));
     }
 
-    public function delete($id): void
+    public function delete(int $id): void
     {
         $this->taskModel->delete($id);
-        header("Location: index.php");
+        header("Location: /");
         exit;
     }
 }
