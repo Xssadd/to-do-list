@@ -8,6 +8,7 @@ use App\Core\Validator;
 class TaskController extends Controller
 {
     private Task $taskModel;
+
     public function __construct()
     {
         $this->taskModel = new Task();
@@ -22,54 +23,73 @@ class TaskController extends Controller
 
     public function create(): void
     {
-        $error = [];
-
-        if($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if(Validator::string($_POST['title'])) {
-                $error['title'] = 'Поле название обязательное';
-            }
-
-            if(empty($error)) {
-                $data['title'] = trim($_POST['title']);
-                $data['description'] = trim($_POST['description'] ?? '');
-                $this->taskModel->create($data);
-
-                header("Location: /");
-                exit;
-            }
+        $errors = [];
+        if(isset($_SESSION['errors'])) {
+            $errors = $_SESSION['errors'];
+            unset($_SESSION['errors']);
         }
 
-        $this->render('form', compact('error'));
+        $this->render('form', compact('errors'));
+    }
+
+    public function store()
+    {
+        if (Validator::string($_POST['title'])) {
+            $_SESSION['errors']['title'] = 'Поле название обязательное';
+            header("Location: /add");
+            exit;
+        }
+
+        $data['title'] = trim($_POST['title']);
+        $data['description'] = trim($_POST['description'] ?? '');
+        $this->taskModel->create($data);
+
+        header("Location: /");
+        exit;
     }
 
     public function edit(int $id): void
     {
         $task = $this->taskModel->find($id);
-        $error = [];
 
-        if(!$task) {
+        if (!$task) {
             http_response_code(404);
-            echo "Задача не найдена";
+            $this->render('404');
             return;
         }
 
-        if($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if(Validator::string($_POST['title'])) {
-                $error['title'] = 'Поле название обязательное';
-            }
-
-            if(empty($error)) {
-                $data['title'] = trim($_POST['title']);
-                $data['description'] = trim($_POST['description'] ?? '');
-                $data['status'] = $_POST['status'];
-                $this->taskModel->update($id, $data);
-
-                header("Location: /");
-                exit;
-            }
+        $errors = [];
+        if(isset($_SESSION['errors'])) {
+            $errors = $_SESSION['errors'];
+            unset($_SESSION['errors']);
         }
 
-        $this->render('form', compact('task', 'error'));
+        $this->render('form', compact('task', 'errors'));
+    }
+
+    public function update(int $id): void
+    {
+        if (Validator::string($_POST['title'])) {
+            $_SESSION['errors']['title'] = 'Поле название обязательное';
+            header("Location: /edit/{$id}");
+            exit;
+        }
+
+        $task = $this->taskModel->find($id);
+
+        if (!$task) {
+            http_response_code(404);
+            $this->render('404');
+            return;
+        }
+
+        $data['title'] = trim($_POST['title']);
+        $data['description'] = trim($_POST['description'] ?? '');
+        $data['status'] = $_POST['status'];
+        $this->taskModel->update($id, $data);
+
+        header("Location: /");
+        exit;
     }
 
     public function delete(): void

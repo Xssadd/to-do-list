@@ -4,11 +4,11 @@
 <form method="post" class="task">
     <label>
         Название:
-        <input type="text" name="title" value="<?= $isEdit ? htmlspecialchars($task['title']) : '' ?>" required>
+        <input type="text" name="title" value="<?= $isEdit ? htmlspecialchars($task['title']) : '' ?>" >
     </label>
     <div class="error">
-        <?php if(isset($error['title'])): ?>
-            <?= $error['title'] ?>
+        <?php if(isset($errors['title'])): ?>
+            <?= $errors['title'] ?>
         <?php endif; ?>
     </div>
 

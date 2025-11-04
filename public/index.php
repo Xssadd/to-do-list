@@ -4,6 +4,8 @@ const BASE_PATH = __DIR__ . '/../src';
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+session_start();
+
 use App\TaskController;
 use App\Core\Router;
 
@@ -14,8 +16,10 @@ use App\Core\Router;
 $router = new Router();
 
 $router->get('/', [TaskController::class, 'index']);
-$router->any('/add', [TaskController::class, 'create']);
-$router->any('/edit/{id}', [TaskController::class, 'edit']);
+$router->get('/add', [TaskController::class, 'create']);
+$router->post('/add', [TaskController::class, 'store']);
+$router->get('/edit/{id}', [TaskController::class, 'edit']);
+$router->post('/edit/{id}', [TaskController::class, 'update']);
 $router->delete('/delete', [TaskController::class, 'delete']);
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
