@@ -1,5 +1,5 @@
 <?php
-namespace APP\Core;
+namespace App\Core;
 
 use Exception;
 
@@ -17,14 +17,9 @@ class Router
         $this->addRoute(['POST'], $uri, $action);
     }
 
-    public function delete(string $uri, $action): void
-    {
-        $this->addRoute(['DELETE'], $uri, $action);
-    }
-
     public function any(string $uri, $action): void
     {
-        $this->addRoute(['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'], $uri, $action);
+        $this->addRoute(['GET', 'POST'], $uri, $action);
     }
 
     private function addRoute(array $methods, string $uri, $action): void
@@ -64,8 +59,14 @@ class Router
         }
 
         // Если маршрут не найден
-        http_response_code(404);
-        echo "404 Not Found";
+        $this->abort();
         return null;
+    }
+
+    public function abort($code = 404): void
+    {
+        http_response_code($code);
+        View::render($code);
+        die();
     }
 }

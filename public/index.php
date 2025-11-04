@@ -1,5 +1,7 @@
 <?php
 
+const BASE_PATH = __DIR__ . '/../src';
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\TaskController;
@@ -11,16 +13,16 @@ use App\Core\Router;
 
 $router = new Router();
 
-$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$method = $_SERVER['REQUEST_METHOD'];
-
 $router->get('/', [TaskController::class, 'index']);
 $router->any('/add', [TaskController::class, 'create']);
 $router->any('/edit/{id}', [TaskController::class, 'edit']);
-$router->delete('/delete/{id}', [TaskController::class, 'delete']);
+$router->post('/delete', [TaskController::class, 'delete']);
+
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$method = $_SERVER['REQUEST_METHOD'];
 
 try {
     $router->dispatch($method, $uri);
 } catch (Exception $e) {
-    http_response_code(404);
+    $router->abort();
 }
