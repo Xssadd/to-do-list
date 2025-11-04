@@ -75,7 +75,7 @@ textarea {
     min-height: 80px;
 }
 
-form {
+form.task {
     background-color: #fff;
     padding: 20px;
     border-radius: 6px;
@@ -86,4 +86,8 @@ form {
 .container {
     max-width: 1000px;
     margin: 0 auto;
+}
+
+.error {
+    color: red;
 }

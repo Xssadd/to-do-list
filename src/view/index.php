@@ -15,9 +15,15 @@
             <td><?= htmlspecialchars($task['title']) ?></td>
             <td><?= htmlspecialchars($task['description'] ?? '') ?></td>
             <td><?= $task['status'] === 'pending' ? 'В ожидании' : 'Выполнено'?></td>
-            <td>
-                <a href="/edit/<?= $task['id'] ?>">✏️</a> |
-                <a href="/delete/<?= $task['id'] ?>" onclick="return confirm('Удалить задачу?')">🗑️</a>
+            <td style="display: flex;">
+                <a href="/edit/<?= $task['id'] ?>">
+                    <button>Редактировать</button>
+                </a>
+                <form method="POST" action="/delete">
+                    <input type="hidden" name="id" value="<?= $task['id'] ?>">
+                    <button type="submit" onclick="return confirm('Удалить задачу?')">Удалить</button>
+                </form>
+
             </td>
         </tr>
     <?php endforeach; ?>

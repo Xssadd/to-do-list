@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Core\Controller;
+use App\Core\Validator;
 
 class TaskController extends Controller
 {
@@ -21,44 +22,59 @@ class TaskController extends Controller
 
     public function create(): void
     {
-        if($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data['title'] = trim($_POST['title']);
-            $data['description'] = trim($_POST['description'] ?? '');
-            $this->taskModel->create($data);
+        $error = [];
 
-            header("Location: /");
-            exit;
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if(Validator::string($_POST['title'])) {
+                $error['title'] = 'Поле название обязательное';
+            }
+
+            if(empty($error)) {
+                $data['title'] = trim($_POST['title']);
+                $data['description'] = trim($_POST['description'] ?? '');
+                $this->taskModel->create($data);
+
+                header("Location: /");
+                exit;
+            }
         }
 
-        $this->render('form');
+        $this->render('form', compact('error'));
     }
 
     public function edit(int $id): void
     {
         $task = $this->taskModel->find($id);
+        $error = [];
 
         if(!$task) {
             http_response_code(404);
-            echo "Task not found";
+            echo "Задача не найдена";
             return;
         }
 
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data['title'] = trim($_POST['title']);
-            $data['description'] = trim($_POST['description'] ?? '');
-            $data['status'] = $_POST['status'];
-            $this->taskModel->update($id, $data);
+            if(Validator::string($_POST['title'])) {
+                $error['title'] = 'Поле название обязательное';
+            }
 
-            header("Location: /");
-            exit;
+            if(empty($error)) {
+                $data['title'] = trim($_POST['title']);
+                $data['description'] = trim($_POST['description'] ?? '');
+                $data['status'] = $_POST['status'];
+                $this->taskModel->update($id, $data);
+
+                header("Location: /");
+                exit;
+            }
         }
 
-        $this->render('form', compact('task'));
+        $this->render('form', compact('task', 'error'));
     }
 
-    public function delete(int $id): void
+    public function delete(): void
     {
-        $this->taskModel->delete($id);
+        $this->taskModel->delete($_POST['id']);
         header("Location: /");
         exit;
     }
