@@ -17,6 +17,16 @@ class Router
         $this->addRoute(['POST'], $uri, $action);
     }
 
+    public function delete(string $uri, $action): void
+    {
+        $this->addRoute(['DELETE'], $uri, $action);
+    }
+
+    public function put(string $uri, $action): void
+    {
+        $this->addRoute(['PUT'], $uri, $action);
+    }
+
     public function any(string $uri, $action): void
     {
         $this->addRoute(['GET', 'POST'], $uri, $action);

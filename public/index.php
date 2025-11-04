@@ -16,10 +16,10 @@ $router = new Router();
 $router->get('/', [TaskController::class, 'index']);
 $router->any('/add', [TaskController::class, 'create']);
 $router->any('/edit/{id}', [TaskController::class, 'edit']);
-$router->post('/delete', [TaskController::class, 'delete']);
+$router->delete('/delete', [TaskController::class, 'delete']);
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$method = $_SERVER['REQUEST_METHOD'];
+$method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 
 try {
     $router->dispatch($method, $uri);

@@ -20,6 +20,7 @@
                     <button>Редактировать</button>
                 </a>
                 <form method="POST" action="/delete">
+                    <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="id" value="<?= $task['id'] ?>">
                     <button type="submit" onclick="return confirm('Удалить задачу?')">Удалить</button>
                 </form>
