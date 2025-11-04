@@ -37,11 +37,7 @@ class Router
         $uri = preg_replace('#\{([^/]+)\}#', '([^/]+)', $uri);
         $uri = "#^" . $uri . "$#";
 
-        $this->routes[] = [
-            'methods' => $methods,
-            'uri' => $uri,
-            'action'  => $action,
-        ];
+        $this->routes[] = compact('methods', 'uri', 'action');
     }
 
     public function dispatch(string $method, string $uri)
