@@ -1,10 +1,10 @@
 <?php
 
+session_start();
+
 const BASE_PATH = __DIR__ . '/../src';
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
-session_start();
 
 use App\TaskController;
 use App\Core\Router;

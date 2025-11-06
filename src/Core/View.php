@@ -4,12 +4,12 @@ namespace App\Core;
 
 class View
 {
-    public static function render(string $view, array $params = []): void
+    public static function render(string $view, array $params = [])
     {
         extract($params);
         ob_start();
-        include BASE_PATH . '/view/' . $view . '.php';
+        require BASE_PATH . '/view/' . $view . '.php';
         $content = ob_get_clean();
-        include BASE_PATH . '/view/layout.php';
+        require BASE_PATH . '/view/layout.php';
     }
 }

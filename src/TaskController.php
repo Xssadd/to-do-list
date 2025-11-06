@@ -29,7 +29,7 @@ class TaskController extends Controller
             unset($_SESSION['errors']);
         }
 
-        $this->render('form', compact('errors'));
+        $this->render('create-form', compact('errors'));
     }
 
     public function store()
@@ -64,7 +64,7 @@ class TaskController extends Controller
             unset($_SESSION['errors']);
         }
 
-        $this->render('form', compact('task', 'errors'));
+        $this->render('edit-form', compact('task', 'errors'));
     }
 
     public function update(): void
@@ -72,7 +72,7 @@ class TaskController extends Controller
         $id = $_POST['id'];
         if (Validator::string($_POST['title'])) {
             $_SESSION['errors']['title'] = 'Поле название обязательное';
-            header("Location: /edit/{($id}");
+            header("Location: /edit/{$id}");
             exit;
         }
 
