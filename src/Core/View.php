@@ -10,6 +10,6 @@ class View
         ob_start();
         require BASE_PATH . '/view/' . $view . '.php';
         $content = ob_get_clean();
-        require BASE_PATH . '/view/layout.php';
+        require BASE_PATH . '/view/layouts/layout.php';
     }
 }
