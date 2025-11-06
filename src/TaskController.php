@@ -67,11 +67,12 @@ class TaskController extends Controller
         $this->render('form', compact('task', 'errors'));
     }
 
-    public function update(int $id): void
+    public function update(): void
     {
+        $id = $_POST['id'];
         if (Validator::string($_POST['title'])) {
             $_SESSION['errors']['title'] = 'Поле название обязательное';
-            header("Location: /edit/{$id}");
+            header("Location: /edit/{($id}");
             exit;
         }
 

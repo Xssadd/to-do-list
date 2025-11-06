@@ -2,6 +2,9 @@
 <h1><?= $isEdit ? '✏️ Редактировать' : '➕ Добавить' ?> задачу</h1>
 
 <form method="post" class="task">
+    <?php if ($isEdit): ?>
+    <input type="hidden" name="id" value="<?= $task['id'] ?>">
+    <?php endif; ?>
     <label>
         Название:
         <input type="text" name="title" value="<?= $isEdit ? htmlspecialchars($task['title']) : '' ?>" >

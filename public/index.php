@@ -19,7 +19,7 @@ $router->get('/', [TaskController::class, 'index']);
 $router->get('/add', [TaskController::class, 'create']);
 $router->post('/add', [TaskController::class, 'store']);
 $router->get('/edit/{id}', [TaskController::class, 'edit']);
-$router->post('/edit/{id}', [TaskController::class, 'update']);
+$router->post('/edit', [TaskController::class, 'update']);
 $router->delete('/delete', [TaskController::class, 'delete']);
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
