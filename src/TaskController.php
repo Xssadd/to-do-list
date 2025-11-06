@@ -35,7 +35,7 @@ class TaskController extends Controller
     public function store()
     {
         if (Validator::string($_POST['title'])) {
-            $_SESSION['errors']['title'] = 'Поле название обязательное';
+            $_SESSION['errors']['title'] = 'Title is required';
             header("Location: /add");
             exit;
         }
@@ -71,7 +71,7 @@ class TaskController extends Controller
     {
         $id = $_POST['id'];
         if (Validator::string($_POST['title'])) {
-            $_SESSION['errors']['title'] = 'Поле название обязательное';
+            $_SESSION['errors']['title'] = 'Title is required';
             header("Location: /edit/{$id}");
             exit;
         }
