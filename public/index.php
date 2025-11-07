@@ -28,5 +28,5 @@ $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 try {
     $router->dispatch($method, $uri);
 } catch (Exception $e) {
-    $router->abort();
+    Router::abort();
 }

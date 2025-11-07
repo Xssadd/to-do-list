@@ -65,14 +65,20 @@ class Router
         }
 
         // Если маршрут не найден
-        $this->abort();
+        self::abort();
         return null;
     }
 
-    public function abort($code = 404): void
+    public static function abort($code = 404): void
     {
         http_response_code($code);
         View::render($code);
-        die();
+        exit;
+    }
+
+    public static function redirect(string $uri, int $code = 302): void
+    {
+        header("Location: " . $uri);
+        exit;
     }
 }

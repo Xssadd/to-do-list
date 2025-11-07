@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Core\Controller;
+use App\Core\Router;
 use App\Core\Validator;
 
 class TaskController extends Controller
@@ -18,7 +19,7 @@ class TaskController extends Controller
     {
         $tasks = $this->taskModel->all();
 
-        $this->render('index', compact('tasks'));
+        $this->render('task/index', compact('tasks'));
     }
 
     public function create(): void
@@ -29,23 +30,21 @@ class TaskController extends Controller
             unset($_SESSION['errors']);
         }
 
-        $this->render('create-form', compact('errors'));
+        $this->render('task/create-form', compact('errors'));
     }
 
     public function store()
     {
         if (Validator::string($_POST['title'])) {
             $_SESSION['errors']['title'] = 'Title is required';
-            header("Location: /add");
-            exit;
+            Router::redirect('/add');
         }
 
         $data['title'] = trim($_POST['title']);
         $data['description'] = trim($_POST['description'] ?? '');
         $this->taskModel->create($data);
 
-        header("Location: /");
-        exit;
+        Router::redirect('/');
     }
 
     public function edit(int $id): void
@@ -53,9 +52,7 @@ class TaskController extends Controller
         $task = $this->taskModel->find($id);
 
         if (!$task) {
-            http_response_code(404);
-            $this->render('404');
-            return;
+            Router::abort();
         }
 
         $errors = [];
@@ -64,7 +61,7 @@ class TaskController extends Controller
             unset($_SESSION['errors']);
         }
 
-        $this->render('edit-form', compact('task', 'errors'));
+        $this->render('task/edit-form', compact('task', 'errors'));
     }
 
     public function update(): void
@@ -72,16 +69,13 @@ class TaskController extends Controller
         $id = $_POST['id'];
         if (Validator::string($_POST['title'])) {
             $_SESSION['errors']['title'] = 'Title is required';
-            header("Location: /edit/{$id}");
-            exit;
+            Router::redirect('/edit/{$id}');
         }
 
         $task = $this->taskModel->find($id);
 
         if (!$task) {
-            http_response_code(404);
-            $this->render('404');
-            return;
+            Router::abort();
         }
 
         $data['title'] = trim($_POST['title']);
@@ -89,14 +83,12 @@ class TaskController extends Controller
         $data['status'] = $_POST['status'];
         $this->taskModel->update($id, $data);
 
-        header("Location: /");
-        exit;
+        Router::redirect('/');
     }
 
     public function delete(): void
     {
         $this->taskModel->delete($_POST['id']);
-        header("Location: /");
-        exit;
+        Router::redirect('/');
     }
 }
