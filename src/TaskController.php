@@ -25,7 +25,7 @@ class TaskController extends Controller
     public function create(): void
     {
         $errors = [];
-        if(isset($_SESSION['errors'])) {
+        if (isset($_SESSION['errors'])) {
             $errors = $_SESSION['errors'];
             unset($_SESSION['errors']);
         }
@@ -35,7 +35,7 @@ class TaskController extends Controller
 
     public function store()
     {
-        if (Validator::string($_POST['title'])) {
+        if (!Validator::string($_POST['title'])) {
             $_SESSION['errors']['title'] = 'Title is required';
             Router::redirect('/add');
         }
@@ -56,7 +56,7 @@ class TaskController extends Controller
         }
 
         $errors = [];
-        if(isset($_SESSION['errors'])) {
+        if (isset($_SESSION['errors'])) {
             $errors = $_SESSION['errors'];
             unset($_SESSION['errors']);
         }
@@ -67,7 +67,7 @@ class TaskController extends Controller
     public function update(): void
     {
         $id = $_POST['id'];
-        if (Validator::string($_POST['title'])) {
+        if (!Validator::string($_POST['title'])) {
             $_SESSION['errors']['title'] = 'Title is required';
             Router::redirect('/edit/{$id}');
         }
