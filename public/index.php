@@ -6,6 +6,7 @@ const BASE_PATH = __DIR__ . '/../src';
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use App\RegisterController;
 use App\TaskController;
 use App\Core\Router;
 
@@ -21,6 +22,9 @@ $router->post('/add', [TaskController::class, 'store']);
 $router->get('/edit/{id}', [TaskController::class, 'edit']);
 $router->post('/edit', [TaskController::class, 'update']);
 $router->delete('/delete', [TaskController::class, 'delete']);
+
+$router->get('/register', [RegisterController::class, 'index']);
+$router->post('/register', [RegisterController::class, 'store']);
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
