@@ -1,5 +1,5 @@
 <?php $headerTitle = 'To-Do List - Edit Task'; ?>
-<?php require 'header.php'; ?>
+<?php require BASE_PATH . '/view/header.php'; ?>
 <main>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <form method="POST" action="/edit" class="space-y-5">
@@ -17,9 +17,7 @@
                 >
             </div>
             <?php if(isset($errors['title'])): ?>
-                <div class="mt-2 text-red-800">
-                    <?= $errors['title'] ?>
-                </div>
+                <p class="text-red-500 text-sm mt-2"><?= $errors['title'] ?></p>
             <?php endif; ?>
 
             <!-- Описание -->
