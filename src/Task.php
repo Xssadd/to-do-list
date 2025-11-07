@@ -2,18 +2,10 @@
 
 namespace App;
 
-use App\Core\Database;
-use PDO;
+use App\Core\Model;
 
-class Task
+class Task extends Model
 {
-    private PDO $db;
-
-    public function __construct()
-    {
-        $this->db = Database::getConnection();
-    }
-
     public function all() : array
     {
         return $this->db->query('SELECT * FROM tasks ORDER BY created_at DESC')->fetchAll();
