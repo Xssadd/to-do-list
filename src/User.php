@@ -25,7 +25,10 @@ class User extends Model
     public function create(string $email, string $password) : bool
     {
         $stmt = $this->db->prepare("INSERT INTO users (email, password) VALUES (:email, :password)");
-        $stmt->execute(['email' => $email, 'password' => $password]);
+        $stmt->execute([
+            'email' => $email,
+            'password' => password_hash($password, PASSWORD_DEFAULT)
+        ]);
 
         return true;
     }
