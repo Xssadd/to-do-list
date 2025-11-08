@@ -2,7 +2,7 @@
 <?php require BASE_PATH . '/view/header.php'; ?>
 <main>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <form method="POST" class="space-y-5">
+        <form method="POST" class="space-y-5" action="<?= \App\Core\Router::url('task.store') ?>">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
                 <input
@@ -31,7 +31,7 @@
 
 
             <div class="flex items-center justify-between pt-4">
-                <a href="/" class="text-gray-600 hover:underline">
+                <a href="<?= \App\Core\Router::url('task.list') ?>" class="text-gray-600 hover:underline">
                     ← Back to list
                 </a>
 

@@ -8,6 +8,8 @@ class Router
 {
     private array $routes = [];
 
+    private static array $uriNames = [];
+
     public function get(string $uri, $action)
     {
         return $this->addRoute(['GET'], $uri, $action);
@@ -40,12 +42,41 @@ class Router
         return $this;
     }
 
+    public function name($name)
+    {
+        self::$uriNames[$name] = $this->routes[array_key_last($this->routes)]['uri'];
+
+        return $this;
+    }
+
+    public static function url($name, $params = [])
+    {
+        $uri = self::$uriNames[$name];
+        $query = [];
+
+        foreach ($params as $key => $value) {
+            $placeholder = '{' . $key . '}';
+            if (str_contains($uri, $placeholder)) {
+                $uri = str_replace($placeholder, $value, $uri);
+            }
+            else {
+                $query[$key] = $value;
+            }
+        }
+
+
+        if (!empty($query)) {
+            $uri .= '?' . http_build_query($query);
+        }
+
+        return $uri;
+    }
+
     private function addRoute(array $methods, string $uri, $action)
     {
-        $uri = preg_replace('#\{([^/]+)\}#', '([^/]+)', $uri);
-        $uri = "#^" . $uri . "$#";
+        $uriPreg = "#^" . preg_replace('#\{([^/]+)}#', '([^/]+)', $uri) . "$#";
 
-        $this->routes[] = compact('methods', 'uri', 'action');
+        $this->routes[] = compact('methods', 'uri', 'uriPreg', 'action');
 
         return $this;
     }
@@ -53,7 +84,7 @@ class Router
     public function dispatch(string $method, string $uri)
     {
         foreach ($this->routes as $route) {
-            if (in_array($method, $route['methods']) && preg_match($route['uri'], $uri, $matches)) {
+            if (in_array($method, $route['methods']) && preg_match($route['uriPreg'], $uri, $matches)) {
 
                 if (isset($route['middleware'])) {
                     Middleware::resolve($route['middleware']);

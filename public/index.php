@@ -16,15 +16,15 @@ use App\Core\Router;
 
 $router = new Router();
 
-$router->get('/', [TaskController::class, 'index']);
-$router->get('/add', [TaskController::class, 'create']);
-$router->post('/add', [TaskController::class, 'store']);
-$router->get('/edit/{id}', [TaskController::class, 'edit']);
-$router->post('/edit', [TaskController::class, 'update']);
-$router->delete('/delete', [TaskController::class, 'delete']);
+$router->get('/', [TaskController::class, 'index'])->name('task.list');
+$router->get('/add', [TaskController::class, 'create'])->name('task.create');
+$router->post('/add', [TaskController::class, 'store'])->name('task.store');
+$router->get('/edit/{id}', [TaskController::class, 'edit'])->name('task.edit');
+$router->post('/edit', [TaskController::class, 'update'])->name('task.update');
+$router->delete('/delete', [TaskController::class, 'delete'])->name('task.delete');
 
-$router->get('/register', [RegisterController::class, 'index']);
-$router->post('/register', [RegisterController::class, 'store']);
+$router->get('/register', [RegisterController::class, 'index'])->only('guest');
+$router->post('/register', [RegisterController::class, 'store'])->only('guest');
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];

@@ -3,7 +3,7 @@
 <main>
     <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div class="pb-2">
-            <a href="/add">
+            <a href="<?= \App\Core\Router::url('task.create') ?>">
                 <button class="cursor-pointer px-6 py-2 bg-green-600 text-white rounded-md shadow hover:bg-green-700 focus:ring-2 focus:ring-green-400 focus:ring-offset-1">
                     ➕ Add Task
                 </button>
@@ -37,10 +37,10 @@
                         </td>
                         <td class="px-4 py-3 text-sm text-right">
                             <div class="inline-flex gap-2">
-                                <a href="/edit/<?= $task['id'] ?>">
+                                <a href="<?= \App\Core\Router::url('task.edit', ['id' => $task['id']]) ?>">
                                     <button class="cursor-pointer px-3 py-1 text-sm border rounded-md hover:bg-gray-300">Edit</button>
                                 </a>
-                                <form method="POST" action="/delete">
+                                <form method="POST" action="<?= \App\Core\Router::url('task.delete') ?>">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <input type="hidden" name="id" value="<?= $task['id'] ?>">
                                     <button type="submit" class="cursor-pointer px-3 py-1 text-sm border rounded-md text-red-600 hover:bg-red-100"  onclick="return confirm('Удалить задачу?')">Delete</button>
