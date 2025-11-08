@@ -1,49 +1,64 @@
 <?php
 namespace App\Core;
 
+use App\Core\Middleware\Middleware;
 use Exception;
 
 class Router
 {
     private array $routes = [];
 
-    public function get(string $uri, $action): void
+    public function get(string $uri, $action)
     {
-        $this->addRoute(['GET'], $uri, $action);
+        return $this->addRoute(['GET'], $uri, $action);
     }
 
-    public function post(string $uri, $action): void
+    public function post(string $uri, $action)
     {
-        $this->addRoute(['POST'], $uri, $action);
+        return $this->addRoute(['POST'], $uri, $action);
     }
 
-    public function delete(string $uri, $action): void
+    public function delete(string $uri, $action)
     {
-        $this->addRoute(['DELETE'], $uri, $action);
+        return $this->addRoute(['DELETE'], $uri, $action);
     }
 
-    public function put(string $uri, $action): void
+    public function put(string $uri, $action)
     {
-        $this->addRoute(['PUT'], $uri, $action);
+        return $this->addRoute(['PUT'], $uri, $action);
     }
 
-    public function any(string $uri, $action): void
+    public function any(string $uri, $action)
     {
-        $this->addRoute(['GET', 'POST'], $uri, $action);
+        return $this->addRoute(['GET', 'POST'], $uri, $action);
     }
 
-    private function addRoute(array $methods, string $uri, $action): void
+    public function only($key)
+    {
+        $this->routes[array_key_last($this->routes)]['middleware'] = $key;
+
+        return $this;
+    }
+
+    private function addRoute(array $methods, string $uri, $action)
     {
         $uri = preg_replace('#\{([^/]+)\}#', '([^/]+)', $uri);
         $uri = "#^" . $uri . "$#";
 
         $this->routes[] = compact('methods', 'uri', 'action');
+
+        return $this;
     }
 
     public function dispatch(string $method, string $uri)
     {
         foreach ($this->routes as $route) {
             if (in_array($method, $route['methods']) && preg_match($route['uri'], $uri, $matches)) {
+
+                if (isset($route['middleware'])) {
+                    Middleware::resolve($route['middleware']);
+                }
+
                 array_shift($matches);
 
                 $action = $route['action'];
@@ -65,7 +80,7 @@ class Router
         }
 
         // Если маршрут не найден
-        self::abort();
+        static::abort();
         return null;
     }
 
