@@ -6,6 +6,7 @@ const BASE_PATH = __DIR__ . '/../src';
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use App\LoginController;
 use App\RegisterController;
 use App\TaskController;
 use App\Core\Router;
@@ -22,6 +23,9 @@ $router->post('/add', [TaskController::class, 'store'])->name('task.store');
 $router->get('/edit/{id}', [TaskController::class, 'edit'])->name('task.edit');
 $router->post('/edit', [TaskController::class, 'update'])->name('task.update');
 $router->delete('/delete', [TaskController::class, 'delete'])->name('task.delete');
+
+$router->get('/login', [LoginController::class, 'index'])->only('guest');
+$router->post('/login', [LoginController::class, 'login'])->only('guest');
 
 $router->get('/register', [RegisterController::class, 'index'])->only('guest');
 $router->post('/register', [RegisterController::class, 'store'])->only('guest');
