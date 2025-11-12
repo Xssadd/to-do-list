@@ -30,6 +30,8 @@ $router->post('/login', [LoginController::class, 'login'])->only('guest');
 $router->get('/register', [RegisterController::class, 'index'])->only('guest');
 $router->post('/register', [RegisterController::class, 'store'])->only('guest');
 
+$router->get('/logout', [LoginController::class, 'logout'])->only('auth');
+
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
 

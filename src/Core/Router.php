@@ -102,8 +102,11 @@ class Router
                 // Если контроллер указан в виде [Class, method]
                 if (is_array($action) && count($action) === 2) {
                     [$class, $method] = $action;
-                    $controller = new $class;
-                    return call_user_func_array([$controller, $method], $matches);
+
+                    if (class_exists($class)) {
+                        $controller = new $class;
+                        return call_user_func_array([$controller, $method], $matches);
+                    }
                 }
 
                 throw new Exception("Неподдерживаемый тип action");

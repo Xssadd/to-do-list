@@ -16,7 +16,7 @@
                     </div>
                 </div>
             </div>
-            <?php if ($_SESSION['user'] ?? false): ?>
+            <?php if (isset($_SESSION['user'])): ?>
                 <div class="hidden md:block">
                     <div class="ml-4 flex items-center md:ml-6">
                         <button type="button" class="relative rounded-full p-1 text-gray-400 hover:text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
@@ -41,6 +41,7 @@
                                 <a href="#" class="block px-4 py-2 text-sm text-gray-700 focus:bg-gray-100 focus:outline-hidden">Sign out</a>
                             </el-menu>
                         </el-dropdown>
+                        <a class="ml-2 hover:text-gray-400 text-white" href="/logout">logout</a>
                     </div>
                 </div>
             <?php else: ?>

@@ -28,14 +28,22 @@ class LoginController extends Controller
                 $_SESSION['user'] = $user['email'];
                 $_SESSION['logged-in'] = true;
                 Router::redirect('/');
-            } else {
-                $_SESSION['error'] = "Wrong credentials";
             }
         }
-        else {
-            $_SESSION['error'] = "User not found";
-        }
 
+        $_SESSION['error'] = "Wrong credentials";
         Router::redirect('/login');
+    }
+
+    public function logout()
+    {
+        $_SESSION = [];
+
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+
+        session_destroy();
+
+        Router::redirect('/');
     }
 }
