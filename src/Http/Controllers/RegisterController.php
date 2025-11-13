@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\Authenticator;
 use App\Core\Controller;
 use App\Core\Router;
 use App\Http\Forms\RegisterForm;
@@ -42,8 +43,8 @@ class RegisterController extends Controller
 
         $user->create($email, $password);
 
-        $_SESSION['logged-in'] = true;
-        $_SESSION['user']['email'] = $email;
+        $auth = new Authenticator();
+        $auth->login($email);
 
         Router::redirect('/');
     }

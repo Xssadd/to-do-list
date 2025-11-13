@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Core\Authenticator;
 use App\Core\Controller;
 use App\Core\Router;
-use App\User;
 
 class LoginController extends Controller
 {
+    private Authenticator $auth;
+
+    public function __construct()
+    {
+        $this->auth = new Authenticator();
+    }
+
     public function index()
     {
         $errors = '';
@@ -20,15 +27,8 @@ class LoginController extends Controller
 
     public function login()
     {
-        $email = $_POST['email'];
-        $user = new User();
-
-        if ($user = $user->findByEmail($email)) {
-            if (password_verify($_POST['password'], $user['password'])) {
-                $_SESSION['user'] = $user['id'];
-                $_SESSION['logged-in'] = true;
-                Router::redirect('/');
-            }
+        if ($this->auth->attempt($_POST['email'], $_POST['password'])) {
+            Router::redirect('/');
         }
 
         $_SESSION['error'] = "Wrong credentials";
@@ -37,12 +37,7 @@ class LoginController extends Controller
 
     public function logout()
     {
-        $_SESSION = [];
-
-        $params = session_get_cookie_params();
-        setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
-
-        session_destroy();
+        $this->auth->logout();
 
         Router::redirect('/');
     }
