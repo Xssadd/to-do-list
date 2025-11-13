@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Http\Controllers;
 
 use App\Core\Controller;
 use App\Core\Router;
 use App\Core\Validator;
+use App\Task;
 
 class TaskController extends Controller
 {

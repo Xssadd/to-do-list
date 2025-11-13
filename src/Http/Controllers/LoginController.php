@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Http\Controllers;
 
 use App\Core\Controller;
 use App\Core\Router;
-use App\Core\Validator;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -25,7 +25,7 @@ class LoginController extends Controller
 
         if ($user = $user->findByEmail($email)) {
             if (password_verify($_POST['password'], $user['password'])) {
-                $_SESSION['user'] = $user['email'];
+                $_SESSION['user'] = $user['id'];
                 $_SESSION['logged-in'] = true;
                 Router::redirect('/');
             }

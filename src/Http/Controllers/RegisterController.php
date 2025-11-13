@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Http\Controllers;
 
 use App\Core\Controller;
 use App\Core\Router;
-use App\Core\Validator;
+use App\Http\Forms\RegisterForm;
+use App\User;
 
 class RegisterController extends Controller
 {
@@ -25,26 +26,17 @@ class RegisterController extends Controller
         $password = $_POST['password'];
         $repeatedPassword = $_POST['repeated-password'];
 
+        $form = new RegisterForm();
+
+        if (!$form->validate($email, $password, $repeatedPassword)) {
+            $_SESSION['errors'] = $form->errors();
+            Router::redirect('/register');
+        }
+
         $user = new User();
-        $errors = [];
 
-        if (!Validator::email($email)) {
-            $errors['email'] = "Please enter a valid email address";
-        }
-        elseif ($user->findByEmail($email)) {
-            $errors['email'] = "Email already exists";
-        }
-
-        if (!Validator::string($password, 6)) {
-            $errors['password'] = "Please enter a password at least 6 characters";
-        }
-
-        if ($password != $repeatedPassword) {
-            $errors['repeated-password'] = "Passwords do not match";
-        }
-
-        if ($errors) {
-            $_SESSION['errors'] = $errors;
+        if ($user->findByEmail($email)) {
+            $_SESSION['errors']['email'] = "Email already exists";
             Router::redirect('/register');
         }
 
