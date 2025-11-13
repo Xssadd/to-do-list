@@ -6,10 +6,10 @@ const BASE_PATH = __DIR__ . '/../src';
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\LoginController;
-use App\RegisterController;
-use App\TaskController;
 use App\Core\Router;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\TaskController;
 
 //ini_set('display_errors', '1');
 //ini_set('display_startup_errors', '1');
